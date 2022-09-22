@@ -2,6 +2,11 @@ import json
 from typing import Dict
 
 
+class ColorizeMixin:
+    def colorize(self, text):
+        return f'\033[0;{self.repr_color_code};1m' + text + '\033[0;0;0m'
+
+
 class MyDict(dict):
     """
     A dictionary supporting dot notation.
@@ -17,7 +22,9 @@ class MyDict(dict):
                 self[k] = MyDict(v)
 
 
-class Advert:
+class Advert(ColorizeMixin):
+    repr_color_code = 33
+
     def __init__(self, description: Dict):
         if 'title' not in description:
             raise ValueError('Description of advert missing "title"')
@@ -28,7 +35,7 @@ class Advert:
         return self._data[item]
 
     def __repr__(self) -> str:
-        return f'{self.title} | {self.price} ₽'
+        return self.colorize(f'{self.title} | {self.price} ₽')
 
     @property
     def price(self):

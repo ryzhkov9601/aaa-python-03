@@ -1,6 +1,6 @@
 import pytest
 import json
-from Advert import Advert
+from Advert import Advert, ColorizeMixin
 
 
 class TestAdvert:
@@ -59,8 +59,8 @@ class TestAdvert:
         assert Advert(data_dict).price == 0
 
     testdata = [
-        (iphone, 'iPhone X | 100 ₽'),
-        (corgi, 'Вельш-корги | 1000 ₽'),
+        (iphone, '\033[0;33;1miPhone X | 100 ₽\033[0;0;0m'),
+        (corgi, '\033[0;33;1mВельш-корги | 1000 ₽\033[0;0;0m'),
     ]
 
     @pytest.mark.parametrize(
