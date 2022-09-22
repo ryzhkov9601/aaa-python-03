@@ -44,27 +44,28 @@ class Advert(ColorizeMixin):
     @price.setter
     def price(self, new_price):
         if new_price < 0:
-            raise ValueError('Price should be >= 0.')
+            raise ValueError('Price must be >= 0')
         self._price = new_price
 
 
 if __name__ == '__main__':
     # создаем экземпляр класса Advert из JSON
-    lesson_str = """{
-    "title": "python", "price": 0,
-    "location": {
-    "address": "город Москва, Лесная, 7",
-    "metro_stations": ["Белорусская"]
-    }
+    corgi_str = """{
+        "title": "Вельш-корги",
+        "price": 1000,
+        "class": "dogs",
+        "location": {
+            "address":
+                "сельское поселение Ельдигинское, поселок санатория Тишково, 25"
+        }
     }"""
-    lesson = json.loads(lesson_str)
+    corgi = json.loads(corgi_str)
     # print(lesson)
-    lesson_ad = Advert(lesson)
+    corgi_ad = Advert(corgi)
     # обращаемся к атрибуту location.address
     # print(lesson_ad.price)
     # Out: 'город Москва, Лесная, 7'
-    my_dict = Advert(lesson)
-    print('Advert representation: ', my_dict)
-    print('Advert.price = ', my_dict.price)
-    print('Advert.location = ', my_dict.location)
-    print('Advert.location.address = ', my_dict.location.address)
+    print('Advert representation: ', corgi_ad)
+    print('Advert.price = ', corgi_ad.price)
+    print('Advert.location = ', corgi_ad.location)
+    print('Advert.location.address = ', corgi_ad.location.address)
