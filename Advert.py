@@ -1,5 +1,21 @@
 import json
 from typing import Dict
+import keyword
+
+
+def isidentifier(ident: str) -> bool:
+    """Determines if string is valid Python identifier."""
+
+    if not isinstance(ident, str):
+        raise TypeError("expected str, but got {!r}".format(type(ident)))
+
+    if not ident.isidentifier():
+        return False
+
+    if keyword.iskeyword(ident):
+        return False
+
+    return True
 
 
 class ColorizeMixin:
@@ -32,7 +48,11 @@ class Advert(ColorizeMixin):
         self._data = MyDict(description)
 
     def __getattr__(self, item: str):
-        return self._data[item]
+        print(isidentifier(item[:-1]))
+        if isidentifier(item[:-1]):
+            return self._data[item]
+        else:
+            return self._data[item[:-1]]
 
     def __repr__(self) -> str:
         return self.colorize(f'{self.title} | {self.price} ₽')
@@ -60,12 +80,8 @@ if __name__ == '__main__':
         }
     }"""
     corgi = json.loads(corgi_str)
-    # print(lesson)
     corgi_ad = Advert(corgi)
-    # обращаемся к атрибуту location.address
-    # print(lesson_ad.price)
-    # Out: 'город Москва, Лесная, 7'
     print('Advert representation: ', corgi_ad)
     print('Advert.price = ', corgi_ad.price)
-    print('Advert.location = ', corgi_ad.location)
+    print('Advert.class_ = ', corgi_ad.class_)
     print('Advert.location.address = ', corgi_ad.location.address)
