@@ -64,7 +64,7 @@ class TestAdvert:
     ]
 
     @pytest.mark.parametrize(
-        'data_dict, repr', testdata,
+        'data_dict, expected', testdata,
         ids=['iphone', 'corgi'], indirect=['data_dict'])
-    def test_repr(self, data_dict, repr):
-        assert Advert(data_dict).__repr__() == repr
+    def test_repr(self, data_dict, expected):
+        assert repr(Advert(data_dict)) == expected
