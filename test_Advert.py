@@ -1,6 +1,6 @@
 import pytest
 import json
-from Advert import Advert, ColorizeMixin
+from Advert import Advert
 
 
 class TestAdvert:
