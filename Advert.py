@@ -1,20 +1,29 @@
 import json
 from typing import Dict
 import keyword
+from functools import wraps
 
 
 class ColorizeMixin:
     """
-    Mix-in class for colorizing representation.
+    Mix-in class for colorizing representation using __init_subclass__.
     """
 
-    def __repr__(self) -> str:
-        return self.colorize(f'{self.title} | {self.price} ₽')
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        color = cls.repr_color_code
+        cls.__repr__ = ColorizeMixin.__colorize_output(cls.__repr__, color)
 
-    def colorize(self, text):
-        color_code = f'\033[0;{self.repr_color_code};1m'
-        reset_color_code = '\033[0;0;0m'
-        return color_code + text + reset_color_code
+    @staticmethod
+    def __colorize_output(func, color):
+        """Wraps function result with color code."""
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            func_result = func(*args, **kwargs)
+            color_code = f'\033[0;{color};1m'
+            reset_color_code = '\033[0;0;0m'
+            return color_code + func_result + reset_color_code
+        return wrapper
 
 
 class MyDict(dict):
@@ -47,6 +56,9 @@ class Advert(ColorizeMixin):
         else:
             return self._data[item]
 
+    def __repr__(self) -> str:
+        return f'{self.title} | {self.price} ₽'
+
     @property
     def price(self):
         return self._price
@@ -71,7 +83,7 @@ if __name__ == '__main__':
     }"""
     corgi_dict = json.loads(corgi_str)
     corgi_ad = Advert(corgi_dict)
-    print('Advert representation: ', corgi_ad)
-    print('Advert.price = ', corgi_ad.price)
-    print('Advert.class_ = ', corgi_ad.class_)
-    print('Advert.location.address = ', corgi_ad.location.address)
+    print('Advert representation:', corgi_ad)
+    print('Advert.price =', corgi_ad.price)
+    print('Advert.class_ =', corgi_ad.class_)
+    print('Advert.location.address =', corgi_ad.location.address)
