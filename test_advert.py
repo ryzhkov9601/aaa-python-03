@@ -1,6 +1,6 @@
 import pytest
 import json
-from Advert import Advert
+from advert import Advert
 
 
 class TestAdvert:
